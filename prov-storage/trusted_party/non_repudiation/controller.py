@@ -39,6 +39,14 @@ def retrieve_organizations():
 def retrieve_organization(org_id, include_revoked=False):
     org = Organization.objects.filter(org_name=org_id).first()
 
+    # fix - added .first() and check for None
+    # if org is None => raise ObjectDoesNotExist
+    # otherwise if org is None and we try to access org.org_name
+    # it will throw an NullPointerException that is not handled and does not return the expected 404 response with error message
+    # but 500 - Internal Server Error!!
+    if org is None:
+        raise ObjectDoesNotExist(f"Organization with id [{org_id}] does not exist!")
+
     active_cert, revoked = get_sorted_certificates(org.org_name)
 
     out = {"id": org.org_name, "certificate": active_cert.cert}
