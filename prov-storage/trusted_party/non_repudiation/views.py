@@ -1,7 +1,7 @@
 import datetime
 import sys
 
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods, require_GET, require_POST
 from trusted_party.settings import config
@@ -71,7 +71,7 @@ def store_cert(request, org_id):
 
     controller.store_organization(org_id, json_data['clientCertificate'], json_data['intermediateCertificates'])
 
-    return HttpResponse(status=201)
+    return JsonResponse({}, status=201)
 
 
 @csrf_exempt
@@ -110,7 +110,7 @@ def update_certificate(request, org_id):
 
     controller.update_certificate(org_id, json_data['clientCertificate'], json_data['intermediateCertificates'])
 
-    return HttpResponse(status=201)
+    return JsonResponse({}, status=201)
 
 
 @csrf_exempt
@@ -212,4 +212,4 @@ def verify_signature(request):
     except InvalidSignature:
         return JsonResponse({"error": f"Invalid signature to the graph!"}, status=400)
 
-    return HttpResponse(status=200)
+    return JsonResponse({}, status=200)
