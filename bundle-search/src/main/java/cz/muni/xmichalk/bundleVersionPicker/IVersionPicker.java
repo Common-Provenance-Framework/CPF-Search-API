@@ -4,5 +4,5 @@ import cz.muni.fi.cpm.model.CpmDocument;
 import org.openprovenance.prov.model.QualifiedName;
 
 public interface IVersionPicker {
-    QualifiedName apply(CpmDocument bundle);
+    QualifiedName apply(QualifiedName bundleId, CpmDocument metaDocument);
 }

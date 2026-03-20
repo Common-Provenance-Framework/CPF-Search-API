@@ -4,11 +4,11 @@ prefix ex <www.example.com/>
 prefix cpm <https://www.commonprovenancemodel.org/cpm-namespace-v1-0/>
 bundle ex:bundleB
 
+entity(ex:backConnector1,[prov:type = 'cpm:backwardConnector'])
+entity(ex:forwardConnector1,[prov:type = 'cpm:forwardConnector'])
 activity(ex:activity1,2011-11-16T16:05:00.000+01:00,2011-11-16T18:05:00.000+01:00,[prov:type = 'cpm:mainActivity'])
 used(ex:activity1,ex:backConnector1,-)
 wasGeneratedBy(ex:forwardConnector1,ex:activity1,-)
-entity(ex:backConnector1,[prov:type = 'cpm:backwardConnector'])
-entity(ex:forwardConnector1,[prov:type = 'cpm:forwardConnector'])
 wasDerivedFrom(ex:forwardConnector1, ex:backConnector1)
 endBundle
 endDocument

@@ -1,0 +1,149 @@
+{
+  "prefix": {
+    "meta": "prov-storage-1:8000/api/v1/documents/meta/"
+  },
+  "bundle": {
+    "meta:SamplingBundle_V0_meta": {
+      "prefix": {
+        "ORG1": "http://prov-storage-1:8000/api/v1/organizations/ORG1/documents/",
+        "pav": "http://purl.org/pav/",
+        "cpm": "https://www.commonprovenancemodel.org/cpm-namespace-v1-0/",
+        "meta": "prov-storage-1:8000/api/v1/documents/meta/",
+        "default": "prov-storage-1:8000"
+      },
+      "entity": {
+        "ORG1:SamplingBundle_V0": {
+          "prov:type": "prov:bundle",
+          "pav:version": {
+            "$": 1,
+            "type": "xsd:int"
+          }
+        },
+        "ORG1_SamplingBundle_V0_token": {
+          "cpm:originatorId": "ORG1",
+          "cpm:authorityId": "Trusted_Party",
+          "cpm:tokenTimestamp": {
+            "$": 1765140237,
+            "type": "xsd:int"
+          },
+          "cpm:documentCreationTimestamp": {
+            "$": 1765140232,
+            "type": "xsd:int"
+          },
+          "cpm:documentDigest": "252be860992eef5a1b9292027762bb155b7943e48014f986cec00115a209a553",
+          "cpm:bundle": "http://prov-storage-1:8000/api/v1/organizations/ORG1/documents/SamplingBundle_V0",
+          "cpm:hashFunction": "SHA256",
+          "cpm:trustedPartyUri": "trusted-party:8020",
+          "cpm:trustedPartyCertificate": "-----BEGIN CERTIFICATE-----\nMIICMjCCAdigAwIBAgIUSLj5Y7PXIS13qPEPDdlINBnQzogwCgYIKoZIzj0EAwIw\nbTELMAkGA1UEBhMCRVUxOjA4BgNVBAoMMURpc3RyaWJ1dGVkIFByb3ZlbmFuY2Ug\nRGVtbyBDZXJ0aWZpY2F0ZSBBdXRob3JpdHkxIjAgBgNVBAMMGURQRCBDZXJ0aWZp\nY2F0ZSBBdXRob3JpdHkwHhcNMjQxMTE2MDI1OTUyWhcNMzQxMTE0MDI1OTUyWjBd\nMQswCQYDVQQGEwJDWjEyMDAGA1UECgwpRGlzdHJpYnV0ZWQgUHJvdmVuYW5jZSBE\nZW1vIFRydXN0ZWQgUGFydHkxGjAYBgNVBAMMEURQRCBUcnVzdGVkIFBhcnR5MFkw\nEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE+V8kT4jkvEWmX301KAS9eklmnRNi6gU9\n+KHxuQpkSOhMTq96CBXFpfokRd7t5VdrRy0uqZsySNp5kW0hnQMJWaNmMGQwEgYD\nVR0TAQH/BAgwBgEB/wIBADAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0OBBYEFMCnPRji\nXokT7quwZRB16AAgz7bnMB8GA1UdIwQYMBaAFCyEKwi1jvdPqfiU+NdH/nvh7PYZ\nMAoGCCqGSM49BAMCA0gAMEUCIQCyZrUShVqrohDqdzdOFmAyFDpwMAO8I6jahvg1\nFRAZYgIgVh4S2tQn12XYdd5ISsCpABsh6ZrjSiVYrt2T1O1nQsw=\n-----END CERTIFICATE-----\n",
+          "cpm:signature": "MEUCIQDSLwRnwigIEb5ybF1RJLRoXW+4cdmhBJMN3HDNffrkEAIgDv2RRbfQGSSwTzMi85NlJH8rTvkWG03PcLZdqJjyFP0=",
+          "prov:type": "cpm:token"
+        },
+        "ORG1:SamplingBundle_V1": {
+          "prov:type": "prov:bundle",
+          "pav:version": {
+            "$": 2,
+            "type": "xsd:int"
+          }
+        },
+        "ORG1_SamplingBundle_V1_token": {
+          "cpm:originatorId": "ORG1",
+          "cpm:authorityId": "Trusted_Party",
+          "cpm:tokenTimestamp": {
+            "$": 1765140258,
+            "type": "xsd:int"
+          },
+          "cpm:documentCreationTimestamp": {
+            "$": 1765140252,
+            "type": "xsd:int"
+          },
+          "cpm:documentDigest": "4aa34225b4e5697f5c7121e046d2ec0f94c6ddd12b0c805e23dff9d22244a506",
+          "cpm:bundle": "http://prov-storage-1:8000/api/v1/organizations/ORG1/documents/SamplingBundle_V1",
+          "cpm:hashFunction": "SHA256",
+          "cpm:trustedPartyUri": "trusted-party:8020",
+          "cpm:trustedPartyCertificate": "-----BEGIN CERTIFICATE-----\nMIICMjCCAdigAwIBAgIUSLj5Y7PXIS13qPEPDdlINBnQzogwCgYIKoZIzj0EAwIw\nbTELMAkGA1UEBhMCRVUxOjA4BgNVBAoMMURpc3RyaWJ1dGVkIFByb3ZlbmFuY2Ug\nRGVtbyBDZXJ0aWZpY2F0ZSBBdXRob3JpdHkxIjAgBgNVBAMMGURQRCBDZXJ0aWZp\nY2F0ZSBBdXRob3JpdHkwHhcNMjQxMTE2MDI1OTUyWhcNMzQxMTE0MDI1OTUyWjBd\nMQswCQYDVQQGEwJDWjEyMDAGA1UECgwpRGlzdHJpYnV0ZWQgUHJvdmVuYW5jZSBE\nZW1vIFRydXN0ZWQgUGFydHkxGjAYBgNVBAMMEURQRCBUcnVzdGVkIFBhcnR5MFkw\nEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE+V8kT4jkvEWmX301KAS9eklmnRNi6gU9\n+KHxuQpkSOhMTq96CBXFpfokRd7t5VdrRy0uqZsySNp5kW0hnQMJWaNmMGQwEgYD\nVR0TAQH/BAgwBgEB/wIBADAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0OBBYEFMCnPRji\nXokT7quwZRB16AAgz7bnMB8GA1UdIwQYMBaAFCyEKwi1jvdPqfiU+NdH/nvh7PYZ\nMAoGCCqGSM49BAMCA0gAMEUCIQCyZrUShVqrohDqdzdOFmAyFDpwMAO8I6jahvg1\nFRAZYgIgVh4S2tQn12XYdd5ISsCpABsh6ZrjSiVYrt2T1O1nQsw=\n-----END CERTIFICATE-----\n",
+          "cpm:signature": "MEUCIDo6QLLsSJIG0yEIpHOQpa65okV5ApSbNGpvZ/2ODr2/AiEA63slG0bi+7RHaDcirttm8qEjmQfj4C8H6yqsAuJxn38=",
+          "prov:type": "cpm:token"
+        },
+        "ORG1:V0_gen": {
+          "prov:type": "prov:bundle"
+        }
+      },
+      "specializationOf": {
+        "_:id1": {
+          "prov:specificEntity": "ORG1:SamplingBundle_V0",
+          "prov:generalEntity": "ORG1:V0_gen"
+        },
+        "_:id6": {
+          "prov:specificEntity": "ORG1:SamplingBundle_V1",
+          "prov:generalEntity": "ORG1:V0_gen"
+        }
+      },
+      "agent": {
+        "Trusted_Party": {
+          "prov:type": "cpm:trustedParty",
+          "cpm:trustedPartyUri": "trusted-party:8020",
+          "cpm:trustedPartyCertificate": "-----BEGIN CERTIFICATE-----\nMIICMjCCAdigAwIBAgIUSLj5Y7PXIS13qPEPDdlINBnQzogwCgYIKoZIzj0EAwIw\nbTELMAkGA1UEBhMCRVUxOjA4BgNVBAoMMURpc3RyaWJ1dGVkIFByb3ZlbmFuY2Ug\nRGVtbyBDZXJ0aWZpY2F0ZSBBdXRob3JpdHkxIjAgBgNVBAMMGURQRCBDZXJ0aWZp\nY2F0ZSBBdXRob3JpdHkwHhcNMjQxMTE2MDI1OTUyWhcNMzQxMTE0MDI1OTUyWjBd\nMQswCQYDVQQGEwJDWjEyMDAGA1UECgwpRGlzdHJpYnV0ZWQgUHJvdmVuYW5jZSBE\nZW1vIFRydXN0ZWQgUGFydHkxGjAYBgNVBAMMEURQRCBUcnVzdGVkIFBhcnR5MFkw\nEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE+V8kT4jkvEWmX301KAS9eklmnRNi6gU9\n+KHxuQpkSOhMTq96CBXFpfokRd7t5VdrRy0uqZsySNp5kW0hnQMJWaNmMGQwEgYD\nVR0TAQH/BAgwBgEB/wIBADAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0OBBYEFMCnPRji\nXokT7quwZRB16AAgz7bnMB8GA1UdIwQYMBaAFCyEKwi1jvdPqfiU+NdH/nvh7PYZ\nMAoGCCqGSM49BAMCA0gAMEUCIQCyZrUShVqrohDqdzdOFmAyFDpwMAO8I6jahvg1\nFRAZYgIgVh4S2tQn12XYdd5ISsCpABsh6ZrjSiVYrt2T1O1nQsw=\n-----END CERTIFICATE-----\n"
+        }
+      },
+      "activity": {
+        "SamplingBundle_V0_tokenGeneration": {
+          "prov:startTime": "2025-12-07T20:43:57",
+          "prov:endTime": "2025-12-07T20:43:57",
+          "prov:type": "cpm:tokenGeneration"
+        },
+        "SamplingBundle_V1_tokenGeneration": {
+          "prov:startTime": "2025-12-07T20:44:18",
+          "prov:endTime": "2025-12-07T20:44:18",
+          "prov:type": "cpm:tokenGeneration"
+        }
+      },
+      "used": {
+        "_:id2": {
+          "prov:activity": "SamplingBundle_V0_tokenGeneration",
+          "prov:entity": "ORG1:SamplingBundle_V0"
+        },
+        "_:id8": {
+          "prov:activity": "SamplingBundle_V1_tokenGeneration",
+          "prov:entity": "ORG1:SamplingBundle_V1"
+        }
+      },
+      "wasAssociatedWith": {
+        "_:id3": {
+          "prov:activity": "SamplingBundle_V0_tokenGeneration",
+          "prov:agent": "Trusted_Party"
+        },
+        "_:id9": {
+          "prov:activity": "SamplingBundle_V1_tokenGeneration",
+          "prov:agent": "Trusted_Party"
+        }
+      },
+      "wasGeneratedBy": {
+        "_:id4": {
+          "prov:entity": "ORG1_SamplingBundle_V0_token",
+          "prov:activity": "SamplingBundle_V0_tokenGeneration"
+        },
+        "_:id10": {
+          "prov:entity": "ORG1_SamplingBundle_V1_token",
+          "prov:activity": "SamplingBundle_V1_tokenGeneration"
+        }
+      },
+      "wasAttributedTo": {
+        "_:id5": {
+          "prov:entity": "ORG1_SamplingBundle_V0_token",
+          "prov:agent": "Trusted_Party"
+        },
+        "_:id11": {
+          "prov:entity": "ORG1_SamplingBundle_V1_token",
+          "prov:agent": "Trusted_Party"
+        }
+      },
+      "wasDerivedFrom": {
+        "_:id7": {
+          "prov:generatedEntity": "ORG1:SamplingBundle_V1",
+          "prov:usedEntity": "ORG1:SamplingBundle_V0",
+          "prov:type": "prov:revisionOf"
+        }
+      }
+    }
+  }
+}

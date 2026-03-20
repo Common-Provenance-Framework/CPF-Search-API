@@ -8,6 +8,7 @@ import java.util.List;
 
 public class TraversalParams {
     public boolean traverseBackwards;
+    public String authorizationHeader;
     public String versionPreference;
     public ETraversalPriority traversalPriority;
     public List<EValidityCheck> validityChecks;
@@ -17,8 +18,16 @@ public class TraversalParams {
 
     }
 
-    public TraversalParams(boolean traverseBackwards, String versionPreference, ETraversalPriority traversalPriority, List<EValidityCheck> validityChecks, JsonNode querySpecification) {
+    public TraversalParams(
+            boolean traverseBackwards,
+            String authorizationHeader,
+            String versionPreference,
+            ETraversalPriority traversalPriority,
+            List<EValidityCheck> validityChecks,
+            JsonNode querySpecification
+    ) {
         this.traverseBackwards = traverseBackwards;
+        this.authorizationHeader = authorizationHeader;
         this.versionPreference = versionPreference;
         this.traversalPriority = traversalPriority;
         this.validityChecks = validityChecks;

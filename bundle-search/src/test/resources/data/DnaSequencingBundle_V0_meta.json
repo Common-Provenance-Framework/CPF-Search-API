@@ -1,0 +1,91 @@
+{
+  "prefix": {
+    "meta": "prov-storage-4:8000/api/v1/documents/meta/"
+  },
+  "bundle": {
+    "meta:DnaSequencingBundle_V0_meta": {
+      "prefix": {
+        "ORG4": "http://prov-storage-4:8000/api/v1/organizations/ORG4/documents/",
+        "pav": "http://purl.org/pav/",
+        "cpm": "https://www.commonprovenancemodel.org/cpm-namespace-v1-0/",
+        "meta": "prov-storage-4:8000/api/v1/documents/meta/",
+        "default": "prov-storage-4:8000"
+      },
+      "entity": {
+        "ORG4:DnaSequencingBundle_V0": {
+          "prov:type": "prov:bundle",
+          "pav:version": {
+            "$": 1,
+            "type": "xsd:int"
+          }
+        },
+        "ORG4_DnaSequencingBundle_V0_token": {
+          "cpm:originatorId": "ORG4",
+          "cpm:authorityId": "Trusted_Party",
+          "cpm:tokenTimestamp": {
+            "$": 1765140254,
+            "type": "xsd:int"
+          },
+          "cpm:documentCreationTimestamp": {
+            "$": 1765140247,
+            "type": "xsd:int"
+          },
+          "cpm:documentDigest": "8ae4eaed2dcf4c3fd15a7f86961215268fd3b73537682b9fb89096973e57c199",
+          "cpm:bundle": "http://prov-storage-4:8000/api/v1/organizations/ORG4/documents/DnaSequencingBundle_V0",
+          "cpm:hashFunction": "SHA256",
+          "cpm:trustedPartyUri": "trusted-party:8020",
+          "cpm:trustedPartyCertificate": "-----BEGIN CERTIFICATE-----\nMIICMjCCAdigAwIBAgIUSLj5Y7PXIS13qPEPDdlINBnQzogwCgYIKoZIzj0EAwIw\nbTELMAkGA1UEBhMCRVUxOjA4BgNVBAoMMURpc3RyaWJ1dGVkIFByb3ZlbmFuY2Ug\nRGVtbyBDZXJ0aWZpY2F0ZSBBdXRob3JpdHkxIjAgBgNVBAMMGURQRCBDZXJ0aWZp\nY2F0ZSBBdXRob3JpdHkwHhcNMjQxMTE2MDI1OTUyWhcNMzQxMTE0MDI1OTUyWjBd\nMQswCQYDVQQGEwJDWjEyMDAGA1UECgwpRGlzdHJpYnV0ZWQgUHJvdmVuYW5jZSBE\nZW1vIFRydXN0ZWQgUGFydHkxGjAYBgNVBAMMEURQRCBUcnVzdGVkIFBhcnR5MFkw\nEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE+V8kT4jkvEWmX301KAS9eklmnRNi6gU9\n+KHxuQpkSOhMTq96CBXFpfokRd7t5VdrRy0uqZsySNp5kW0hnQMJWaNmMGQwEgYD\nVR0TAQH/BAgwBgEB/wIBADAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0OBBYEFMCnPRji\nXokT7quwZRB16AAgz7bnMB8GA1UdIwQYMBaAFCyEKwi1jvdPqfiU+NdH/nvh7PYZ\nMAoGCCqGSM49BAMCA0gAMEUCIQCyZrUShVqrohDqdzdOFmAyFDpwMAO8I6jahvg1\nFRAZYgIgVh4S2tQn12XYdd5ISsCpABsh6ZrjSiVYrt2T1O1nQsw=\n-----END CERTIFICATE-----\n",
+          "cpm:signature": "MEQCIFAJXLYLBDIR+ofUSdqtgYpL+lx147H+47QMyHGH5ALlAiA8k5SxgWHcjXwI6v9TEehigYMRbeUkFQsyvaknMoWsEw==",
+          "prov:type": "cpm:token"
+        },
+        "ORG4:V0_gen": {
+          "prov:type": "prov:bundle"
+        }
+      },
+      "specializationOf": {
+        "_:id1": {
+          "prov:specificEntity": "ORG4:DnaSequencingBundle_V0",
+          "prov:generalEntity": "ORG4:V0_gen"
+        }
+      },
+      "agent": {
+        "Trusted_Party": {
+          "prov:type": "cpm:trustedParty",
+          "cpm:trustedPartyUri": "trusted-party:8020",
+          "cpm:trustedPartyCertificate": "-----BEGIN CERTIFICATE-----\nMIICMjCCAdigAwIBAgIUSLj5Y7PXIS13qPEPDdlINBnQzogwCgYIKoZIzj0EAwIw\nbTELMAkGA1UEBhMCRVUxOjA4BgNVBAoMMURpc3RyaWJ1dGVkIFByb3ZlbmFuY2Ug\nRGVtbyBDZXJ0aWZpY2F0ZSBBdXRob3JpdHkxIjAgBgNVBAMMGURQRCBDZXJ0aWZp\nY2F0ZSBBdXRob3JpdHkwHhcNMjQxMTE2MDI1OTUyWhcNMzQxMTE0MDI1OTUyWjBd\nMQswCQYDVQQGEwJDWjEyMDAGA1UECgwpRGlzdHJpYnV0ZWQgUHJvdmVuYW5jZSBE\nZW1vIFRydXN0ZWQgUGFydHkxGjAYBgNVBAMMEURQRCBUcnVzdGVkIFBhcnR5MFkw\nEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE+V8kT4jkvEWmX301KAS9eklmnRNi6gU9\n+KHxuQpkSOhMTq96CBXFpfokRd7t5VdrRy0uqZsySNp5kW0hnQMJWaNmMGQwEgYD\nVR0TAQH/BAgwBgEB/wIBADAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0OBBYEFMCnPRji\nXokT7quwZRB16AAgz7bnMB8GA1UdIwQYMBaAFCyEKwi1jvdPqfiU+NdH/nvh7PYZ\nMAoGCCqGSM49BAMCA0gAMEUCIQCyZrUShVqrohDqdzdOFmAyFDpwMAO8I6jahvg1\nFRAZYgIgVh4S2tQn12XYdd5ISsCpABsh6ZrjSiVYrt2T1O1nQsw=\n-----END CERTIFICATE-----\n"
+        }
+      },
+      "activity": {
+        "DnaSequencingBundle_V0_tokenGeneration": {
+          "prov:startTime": "2025-12-07T20:44:14",
+          "prov:endTime": "2025-12-07T20:44:14",
+          "prov:type": "cpm:tokenGeneration"
+        }
+      },
+      "used": {
+        "_:id2": {
+          "prov:activity": "DnaSequencingBundle_V0_tokenGeneration",
+          "prov:entity": "ORG4:DnaSequencingBundle_V0"
+        }
+      },
+      "wasAssociatedWith": {
+        "_:id3": {
+          "prov:activity": "DnaSequencingBundle_V0_tokenGeneration",
+          "prov:agent": "Trusted_Party"
+        }
+      },
+      "wasGeneratedBy": {
+        "_:id4": {
+          "prov:entity": "ORG4_DnaSequencingBundle_V0_token",
+          "prov:activity": "DnaSequencingBundle_V0_tokenGeneration"
+        }
+      },
+      "wasAttributedTo": {
+        "_:id5": {
+          "prov:entity": "ORG4_DnaSequencingBundle_V0_token",
+          "prov:agent": "Trusted_Party"
+        }
+      }
+    }
+  }
+}

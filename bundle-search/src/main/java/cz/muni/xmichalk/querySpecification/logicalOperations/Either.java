@@ -14,11 +14,13 @@ public class Either<T> implements ICondition<T> {
         this.second = second;
     }
 
-    @Override
-    public boolean test(T item) {
+    @Override public boolean test(T item) {
 
-        if (first == null || second == null) {
-            throw new IllegalStateException("Both specifications must be non-null for XOR operation.");
+        if (first == null) {
+            throw new IllegalStateException("Value of first cannot be null in " + this.getClass().getSimpleName());
+        }
+        if (second == null) {
+            throw new IllegalStateException("Value of second cannot be null in " + this.getClass().getSimpleName());
         }
 
         return first.test(item) ^ second.test(item);

@@ -1,16 +1,15 @@
 package cz.muni.xmichalk.models;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import cz.muni.xmichalk.documentLoader.storageDTO.Token;
+import cz.muni.xmichalk.storage.storageDTO.Token;
 
-public class QueryResult {
+public class QueryResult<T> {
     public Token token;
-    public JsonNode result;
+    public T result;
 
     public QueryResult() {
     }
 
-    public QueryResult(Token token, JsonNode result) {
+    public QueryResult(T result, Token token) {
         this.token = token;
         this.result = result;
     }

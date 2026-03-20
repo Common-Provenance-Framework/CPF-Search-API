@@ -24,9 +24,15 @@ public class ProvServiceTable implements IProvServiceTable {
 
     public void loadFromJson(InputStream input) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        LinkedHashMap<String, String> loaded =
-                mapper.readValue(input,
-                        mapper.getTypeFactory().constructMapType(LinkedHashMap.class, String.class, String.class));
+        LinkedHashMap<String, String> loaded = mapper.readValue(
+                input,
+                mapper.getTypeFactory()
+                        .constructMapType(
+                                LinkedHashMap.class,
+                                String.class,
+                                String.class
+                        )
+        );
         table.putAll(loaded);
 
         log.info("Loaded prov service table: {}", table);

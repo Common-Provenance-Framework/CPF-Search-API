@@ -1,6 +1,6 @@
 {
-  "http://prov-storage-1:8000/api/v1/organizations/ORG1/": "http://bundle-searcher-1:8000/api/",
-  "http://prov-storage-2:8000/api/v1/organizations/ORG2/": "http://bundle-searcher-2:8000/api/",
-  "http://prov-storage-3:8000/api/v1/organizations/ORG3/": "http://bundle-searcher-3:8000/api/",
-  "http://prov-storage-4:8000/api/v1/organizations/ORG4/": "http://bundle-searcher-4:8000/api/"
+  "http://prov-storage-1:8000/api/v1/organizations/ORG1/": "http://prov-access-service-1:8000/api/",
+  "http://prov-storage-2:8000/api/v1/organizations/ORG2/": "http://prov-access-service-2:8000/api/",
+  "http://prov-storage-3:8000/api/v1/organizations/ORG3/": "http://prov-access-service-3:8000/api/",
+  "http://prov-storage-4:8000/api/v1/organizations/ORG4/": "http://prov-access-service-4:8000/api/"
 }

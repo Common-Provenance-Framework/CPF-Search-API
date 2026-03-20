@@ -6,8 +6,7 @@ import org.openprovenance.prov.model.QualifiedName;
 
 public class SpecifiedVersionPicker implements IVersionPicker {
 
-    @Override
-    public QualifiedName apply(CpmDocument bundle) {
-        return bundle.getBundleId();
+    @Override public QualifiedName apply(final QualifiedName bundleId, final CpmDocument metaDocument) {
+        return bundleId;
     }
 }

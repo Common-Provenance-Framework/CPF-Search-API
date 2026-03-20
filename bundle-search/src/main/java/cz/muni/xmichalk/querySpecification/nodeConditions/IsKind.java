@@ -14,9 +14,10 @@ public class IsKind implements ICondition<INode> {
         this.kind = kind;
     }
 
-    @Override
-    public boolean test(INode node) {
-        if (kind == null) return true;
+    @Override public boolean test(INode node) {
+        if (kind == null) {
+            throw new IllegalStateException("Value of kind cannot be null in " + this.getClass().getSimpleName());
+        }
         return node.getKind().equals(kind);
     }
 }

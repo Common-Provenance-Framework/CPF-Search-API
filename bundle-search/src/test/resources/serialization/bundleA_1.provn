@@ -1,14 +1,15 @@
 document
 prefix dct <http://purl.org/dc/terms/>
-prefix ex <www.example.com/>
 prefix cpm <https://www.commonprovenancemodel.org/cpm-namespace-v1-0/>
+prefix ex <www.example.com/>
+prefix blank <https://openprovenance.org/blank/>
 bundle ex:bundleA
 
-entity(cpm:entity1)
-activity(cpm:activity1,2025-08-16T12:00:00.000+02:00,2025-08-16T13:00:00.000+02:00)
-agent(cpm:agent1)
-wasAttributedTo(cpm:attr;cpm:entity1, cpm:agent1)
-wasAssociatedWith(cpm:assoc;cpm:activity1,cpm:agent1,-)
-wasGeneratedBy(cpm:gen;cpm:entity1,cpm:activity1,-)
+entity(blank:entity1)
+activity(blank:activity1,2025-08-16T12:00:00.000+02:00,2025-08-16T13:00:00.000+02:00)
+agent(blank:agent1)
+wasAttributedTo(blank:attr;blank:entity1, blank:agent1)
+wasAssociatedWith(blank:assoc;blank:activity1,blank:agent1,-)
+wasGeneratedBy(blank:gen;blank:entity1,blank:activity1,-)
 endBundle
 endDocument

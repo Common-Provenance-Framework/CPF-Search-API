@@ -1,29 +1,31 @@
 {
   "type": "TestBundleFits",
   "condition": {
-    "type": "CountCondition",
-    "findableInDocument": {
-      "type": "FindFittingNodes",
+    "type": "CountComparisonCondition",
+    "first": {
+      "type": "FittingNodes",
       "nodeCondition": {
         "type": "AllTrue",
         "conditions": [
           {
-            "type": "HasId",
-            "idUriRegex": "(?i).*Sampling.*"
-          },
-          {
-            "type": "IsKind",
-            "kind": "PROV_ACTIVITY"
-          },
-          {
             "type": "HasAttrQualifiedNameValue",
             "attributeNameUri": "http://www.w3.org/ns/prov#type",
-            "uriRegex": "https://www.commonprovenancemodel.org/cpm-namespace-v1-0/mainActivity"
+            "valueUriRegex": "https://www.commonprovenancemodel.org/cpm-namespace-v1-0/mainActivity"
+          },
+          {
+            "type": "HasId",
+            "idUriRegex": "(?i).*Sampling.*"
           }
         ]
+      },
+      "startsIn": {
+        "type": "WholeGraph"
       }
     },
-    "comparisonResult": "EQUALS",
-    "count": 1
+    "comparisonResult": "GREATER_THAN",
+    "second": {
+      "type": "CountConstant",
+      "count": 0
+    }
   }
 }

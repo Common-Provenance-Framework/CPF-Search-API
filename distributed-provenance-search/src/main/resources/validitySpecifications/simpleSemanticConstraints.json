@@ -4,17 +4,23 @@
     "type": "AllTrue",
     "conditions": [
       {
-        "type": "CountCondition",
-        "findableInDocument": {
-          "type": "FindFittingNodes",
+        "type": "CountComparisonCondition",
+        "first": {
+          "type": "FittingNodes",
           "nodeCondition": {
             "type": "HasAttrQualifiedNameValue",
             "attributeNameUri": "http://www.w3.org/ns/prov#type",
-            "uriRegex": "https://www.commonprovenancemodel.org/cpm-namespace-v1-0/mainActivity"
+            "valueUriRegex": "https://www.commonprovenancemodel.org/cpm-namespace-v1-0/mainActivity"
+          },
+          "startsIn": {
+            "type": "WholeGraph"
           }
         },
         "comparisonResult": "EQUALS",
-        "count": 1
+        "second": {
+          "type": "CountConstant",
+          "count": 1
+        }
       },
       {
         "type": "AllNodes",
@@ -23,20 +29,11 @@
           "premise": {
             "type": "HasAttrQualifiedNameValue",
             "attributeNameUri": "http://www.w3.org/ns/prov#type",
-            "uriRegex": "https://www.commonprovenancemodel.org/cpm-namespace-v1-0/mainActivity"
+            "valueUriRegex": "https://www.commonprovenancemodel.org/cpm-namespace-v1-0/mainActivity"
           },
           "consequence": {
-            "type": "AllTrue",
-            "conditions": [
-              {
-                "type": "IsKind",
-                "kind": "PROV_ACTIVITY"
-              },
-              {
-                "type": "HasAttr",
-                "attributeNameUri": "https://www.commonprovenancemodel.org/cpm-namespace-v1-0/referencedMetaBundleId"
-              }
-            ]
+            "type": "HasAttr",
+            "attributeNameUri": "https://www.commonprovenancemodel.org/cpm-namespace-v1-0/referencedMetaBundleId"
           }
         }
       },
@@ -47,7 +44,7 @@
           "premise": {
             "type": "HasAttrQualifiedNameValue",
             "attributeNameUri": "http://www.w3.org/ns/prov#type",
-            "uriRegex": "https://www.commonprovenancemodel.org/cpm-namespace-v1-0/backwardConnector"
+            "valueUriRegex": "https://www.commonprovenancemodel.org/cpm-namespace-v1-0/backwardConnector"
           },
           "consequence": {
             "type": "AllTrue",

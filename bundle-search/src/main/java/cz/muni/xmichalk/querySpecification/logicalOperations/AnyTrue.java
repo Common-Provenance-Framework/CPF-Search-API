@@ -14,10 +14,9 @@ public class AnyTrue<T> implements ICondition<T> {
         this.conditions = conditions;
     }
 
-    @Override
-    public boolean test(T target) {
+    @Override public boolean test(T target) {
         if (conditions == null || conditions.isEmpty()) {
-            return true;
+            throw new IllegalStateException("Value of conditions cannot be null in " + this.getClass().getSimpleName());
         }
         return conditions.stream().anyMatch(condition -> condition.test(target));
     }

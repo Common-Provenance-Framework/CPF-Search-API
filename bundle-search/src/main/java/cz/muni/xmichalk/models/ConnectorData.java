@@ -12,9 +12,15 @@ public class ConnectorData {
     public ConnectorData() {
     }
 
-    public ConnectorData(QualifiedNameData id, QualifiedNameData referencedConnectorId,
-                         QualifiedNameData referencedBundleId, QualifiedNameData referencedMetaBundleId,
-                         String referencedBundleHashValue, String hashAlg, String provenanceServiceUri) {
+    public ConnectorData(
+            QualifiedNameData id,
+            QualifiedNameData referencedConnectorId,
+            QualifiedNameData referencedBundleId,
+            QualifiedNameData referencedMetaBundleId,
+            String referencedBundleHashValue,
+            String hashAlg,
+            String provenanceServiceUri
+    ) {
         this.id = id;
         this.referencedConnectorId = referencedConnectorId;
         this.referencedBundleId = referencedBundleId;

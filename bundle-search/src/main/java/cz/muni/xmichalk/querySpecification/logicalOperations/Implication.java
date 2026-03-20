@@ -14,11 +14,16 @@ public class Implication<T> implements ICondition<T> {
         this.consequence = consequence;
     }
 
-    @Override
-    public boolean test(T target) {
-        if (premise == null || consequence == null) {
-            throw new IllegalStateException("Premise and consequence must be set before testing.");
+    @Override public boolean test(T target) {
+        if (premise == null) {
+            throw new IllegalStateException("Value of premise cannot be null in " + this.getClass().getSimpleName());
         }
+        if (consequence == null) {
+            throw new IllegalStateException(
+                    "Value of consequence cannot be null in " + this.getClass().getSimpleName());
+        }
+
+
         if (premise.test(target)) {
             return consequence.test(target);
         }

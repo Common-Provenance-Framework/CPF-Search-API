@@ -1,62 +1,74 @@
 {
-  "type" : "AllTrue",
-  "conditions" : [ {
-    "type" : "CountCondition",
-    "findableInDocument" : {
-      "type" : "FindFittingNodes",
-      "nodeCondition" : {
-        "type" : "HasAttrQualifiedNameValue",
-        "attributeNameUri" : "http://www.w3.org/ns/prov#type",
-        "uriRegex" : "https://www.commonprovenancemodel.org/cpm-namespace-v1-0/mainActivity"
-      }
-    },
-    "comparisonResult" : "EQUALS",
-    "count" : 1
-  }, {
-    "type" : "AllNodes",
-    "condition" : {
-      "type" : "Implication",
-      "premise" : {
-        "type" : "HasAttrQualifiedNameValue",
-        "attributeNameUri" : "http://www.w3.org/ns/prov#type",
-        "uriRegex" : "https://www.commonprovenancemodel.org/cpm-namespace-v1-0/mainActivity"
+  "type": "TestBundleFits",
+  "condition": {
+    "type": "AllTrue",
+    "conditions": [
+      {
+        "type": "CountComparisonCondition",
+        "first": {
+          "type": "FittingNodes",
+          "nodeCondition": {
+            "type": "HasAttrQualifiedNameValue",
+            "attributeNameUri": "http://www.w3.org/ns/prov#type",
+            "valueUriRegex": "https://www.commonprovenancemodel.org/cpm-namespace-v1-0/mainActivity"
+          },
+          "startsIn": {
+            "type": "WholeGraph"
+          }
+        },
+        "comparisonResult": "EQUALS",
+        "second": {
+          "type": "CountConstant",
+          "count": 1
+        }
       },
-      "consequence" : {
-        "type" : "AllTrue",
-        "conditions" : [ {
-          "type" : "IsKind",
-          "kind" : "PROV_ACTIVITY"
-        }, {
-          "type" : "HasAttr",
-          "attributeNameUri" : "https://www.commonprovenancemodel.org/cpm-namespace-v1-0/referencedMetaBundleId"
-        } ]
-      }
-    }
-  }, {
-    "type" : "AllNodes",
-    "condition" : {
-      "type" : "Implication",
-      "premise" : {
-        "type" : "HasAttrQualifiedNameValue",
-        "attributeNameUri" : "http://www.w3.org/ns/prov#type",
-        "uriRegex" : "https://www.commonprovenancemodel.org/cpm-namespace-v1-0/backwardConnector"
+      {
+        "type": "AllNodes",
+        "condition": {
+          "type": "Implication",
+          "premise": {
+            "type": "HasAttrQualifiedNameValue",
+            "attributeNameUri": "http://www.w3.org/ns/prov#type",
+            "valueUriRegex": "https://www.commonprovenancemodel.org/cpm-namespace-v1-0/mainActivity"
+          },
+          "consequence": {
+            "type": "HasAttr",
+            "attributeNameUri": "https://www.commonprovenancemodel.org/cpm-namespace-v1-0/referencedMetaBundleId"
+          }
+        }
       },
-      "consequence" : {
-        "type" : "AllTrue",
-        "conditions" : [ {
-          "type" : "HasAttr",
-          "attributeNameUri" : "https://www.commonprovenancemodel.org/cpm-namespace-v1-0/referencedMetaBundleId"
-        }, {
-          "type" : "HasAttr",
-          "attributeNameUri" : "https://www.commonprovenancemodel.org/cpm-namespace-v1-0/referencedBundleId"
-        }, {
-          "type" : "HasAttr",
-          "attributeNameUri" : "https://www.commonprovenancemodel.org/cpm-namespace-v1-0/referencedBundleHashValue"
-        }, {
-          "type" : "HasAttr",
-          "attributeNameUri" : "https://www.commonprovenancemodel.org/cpm-namespace-v1-0/hashAlg"
-        } ]
+      {
+        "type": "AllNodes",
+        "condition": {
+          "type": "Implication",
+          "premise": {
+            "type": "HasAttrQualifiedNameValue",
+            "attributeNameUri": "http://www.w3.org/ns/prov#type",
+            "valueUriRegex": "https://www.commonprovenancemodel.org/cpm-namespace-v1-0/backwardConnector"
+          },
+          "consequence": {
+            "type": "AllTrue",
+            "conditions": [
+              {
+                "type": "HasAttr",
+                "attributeNameUri": "https://www.commonprovenancemodel.org/cpm-namespace-v1-0/referencedMetaBundleId"
+              },
+              {
+                "type": "HasAttr",
+                "attributeNameUri": "https://www.commonprovenancemodel.org/cpm-namespace-v1-0/referencedBundleId"
+              },
+              {
+                "type": "HasAttr",
+                "attributeNameUri": "https://www.commonprovenancemodel.org/cpm-namespace-v1-0/referencedBundleHashValue"
+              },
+              {
+                "type": "HasAttr",
+                "attributeNameUri": "https://www.commonprovenancemodel.org/cpm-namespace-v1-0/hashAlg"
+              }
+            ]
+          }
+        }
       }
-    }
-  } ]
+    ]
+  }
 }

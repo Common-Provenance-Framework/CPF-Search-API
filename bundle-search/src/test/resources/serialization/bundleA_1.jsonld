@@ -3,6 +3,7 @@
     "xsd" : "http://www.w3.org/2001/XMLSchema#",
     "cpm" : "https://www.commonprovenancemodel.org/cpm-namespace-v1-0/",
     "ex" : "www.example.com/",
+    "blank" : "https://openprovenance.org/blank/",
     "dct" : "http://purl.org/dc/terms/",
     "prov" : "http://www.w3.org/ns/prov#"
   }, "https://openprovenance.org/prov-jsonld/context.jsonld" ],
@@ -12,30 +13,30 @@
     "@id" : "ex:bundleA",
     "@graph" : [ {
       "@type" : "Entity",
-      "@id" : "cpm:entity1"
+      "@id" : "blank:entity1"
     }, {
       "@type" : "Activity",
-      "@id" : "cpm:activity1",
+      "@id" : "blank:activity1",
       "startTime" : "2025-08-16T12:00:00.000+02:00",
       "endTime" : "2025-08-16T13:00:00.000+02:00"
     }, {
       "@type" : "Agent",
-      "@id" : "cpm:agent1"
+      "@id" : "blank:agent1"
     }, {
       "@type" : "Attribution",
-      "@id" : "cpm:attr",
-      "entity" : "cpm:entity1",
-      "agent" : "cpm:agent1"
+      "@id" : "blank:attr",
+      "entity" : "blank:entity1",
+      "agent" : "blank:agent1"
     }, {
       "@type" : "Association",
-      "@id" : "cpm:assoc",
-      "activity" : "cpm:activity1",
-      "agent" : "cpm:agent1"
+      "@id" : "blank:assoc",
+      "activity" : "blank:activity1",
+      "agent" : "blank:agent1"
     }, {
       "@type" : "Generation",
-      "@id" : "cpm:gen",
-      "entity" : "cpm:entity1",
-      "activity" : "cpm:activity1"
+      "@id" : "blank:gen",
+      "entity" : "blank:entity1",
+      "activity" : "blank:activity1"
     } ]
   } ]
 }

@@ -1,0 +1,95 @@
+{
+  "authorizedByDefault": false,
+  "authEntries": [
+    {
+      "authHeader": "Bearer full_access_token",
+      "uri": "http://prov-storage-1:8000/api/v1/organizations/ORG1/documents/SamplingBundle_V0",
+      "authorized": true
+    },
+    {
+      "authHeader": "Bearer full_access_token",
+      "uri": "http://prov-storage-1:8000/api/v1/organizations/ORG1/documents/SamplingBundle_V1",
+      "authorized": true
+    },
+    {
+      "authHeader": "Bearer full_access_token",
+      "uri": "http://prov-storage-1:8000/api/v1/documents/meta/SamplingBundle_V0_meta",
+      "authorized": true
+    },
+    {
+      "authHeader": "Bearer full_access_token",
+      "uri": "http://prov-storage-2:8000/api/v1/organizations/ORG2/documents/ProcessingBundle_V0",
+      "authorized": true
+    },
+    {
+      "authHeader": "Bearer full_access_token",
+      "uri": "http://prov-storage-2:8000/api/v1/organizations/ORG2/documents/ProcessingBundle_V1",
+      "authorized": true
+    },
+    {
+      "authHeader": "Bearer full_access_token",
+      "uri": "http://prov-storage-2:8000/api/v1/documents/meta/ProcessingBundle_V0_meta",
+      "authorized": true
+    },
+    {
+      "authHeader": "Bearer full_access_token",
+      "uri": "http://prov-storage-3:8000/api/v1/organizations/ORG3/documents/SpeciesIdentificationBundle_V0",
+      "authorized": true
+    },
+    {
+      "authHeader": "Bearer full_access_token",
+      "uri": "http://prov-storage-3:8000/api/v1/documents/meta/SpeciesIdentificationBundle_V0_meta",
+      "authorized": true
+    },
+    {
+      "authHeader": "Bearer full_access_token",
+      "uri": "http://prov-storage-4:8000/api/v1/organizations/ORG4/documents/DnaSequencingBundle_V0",
+      "authorized": true
+    },
+    {
+      "authHeader": "Bearer full_access_token",
+      "uri": "http://prov-storage-4:8000/api/v1/documents/meta/DnaSequencingBundle_V0_meta",
+      "authorized": true
+    },
+    {
+      "authHeader": "Bearer denied_processing_bundle_access",
+      "uri": "http://prov-storage-1:8000/api/v1/organizations/ORG1/documents/SamplingBundle_V0",
+      "authorized": true
+    },
+    {
+      "authHeader": "Bearer denied_processing_bundle_access",
+      "uri": "http://prov-storage-1:8000/api/v1/organizations/ORG1/documents/SamplingBundle_V1",
+      "authorized": true
+    },
+    {
+      "authHeader": "Bearer denied_processing_bundle_access",
+      "uri": "http://prov-storage-1:8000/api/v1/documents/meta/SamplingBundle_V0_meta",
+      "authorized": true
+    },
+    {
+      "authHeader": "Bearer denied_processing_bundle_access",
+      "uri": "http://prov-storage-2:8000/api/v1/documents/meta/ProcessingBundle_V0_meta",
+      "authorized": true
+    },
+    {
+      "authHeader": "Bearer denied_processing_bundle_access",
+      "uri": "http://prov-storage-3:8000/api/v1/organizations/ORG3/documents/SpeciesIdentificationBundle_V0",
+      "authorized": true
+    },
+    {
+      "authHeader": "Bearer denied_processing_bundle_access",
+      "uri": "http://prov-storage-3:8000/api/v1/documents/meta/SpeciesIdentificationBundle_V0_meta",
+      "authorized": true
+    },
+    {
+      "authHeader": "Bearer denied_processing_bundle_access",
+      "uri": "http://prov-storage-4:8000/api/v1/organizations/ORG4/documents/DnaSequencingBundle_V0",
+      "authorized": true
+    },
+    {
+      "authHeader": "Bearer denied_processing_bundle_access",
+      "uri": "http://prov-storage-4:8000/api/v1/documents/meta/DnaSequencingBundle_V0_meta",
+      "authorized": true
+    }
+  ]
+}

@@ -1,0 +1,2 @@
+Diagrams of bundle contents taken from https://is.muni.cz/th/sv0z0/?lang=en
+Edited diagram of SamplingBundle to reflect connectors name correction from IdentifiedSpeciesCon(Spec) to ProcessedSampleCon(Spec)

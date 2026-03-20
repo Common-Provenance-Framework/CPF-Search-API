@@ -21,14 +21,14 @@ import java.security.cert.X509Certificate;
 import java.util.Base64;
 import java.util.List;
 
-public class StorageDocumentIntegrityVerifier {
+public class StorageDocumentIntegrityVerifier implements IIntegrityVerifier {
     private static final Logger log = LoggerFactory.getLogger(StorageDocumentIntegrityVerifier.class);
 
-    public static boolean verifyIntegrity(QualifiedName document, Token token) {
+    public boolean verifyIntegrity(QualifiedName document, Token token) {
         return verifySignature(token) && verifyTokenExists(document, token);
     }
 
-    public static boolean verifySignature(Token token) {
+    public boolean verifySignature(Token token) {
         try {
             PublicKey publicKey = loadPublicKeyFromCertificate(token.data().additionalData().trustedPartyCertificate());
 
@@ -48,7 +48,7 @@ public class StorageDocumentIntegrityVerifier {
         }
     }
 
-    public static boolean verifyTokenExists(QualifiedName document, Token token) {
+    public boolean verifyTokenExists(QualifiedName document, Token token) {
         String trustedPartyUri = token.data().additionalData().trustedPartyUri();
         String url = trustedPartyUri + "/api/v1/organizations/" + token.data().originatorId() + "/tokens";
         if (!url.startsWith("http")) {
@@ -57,10 +57,7 @@ public class StorageDocumentIntegrityVerifier {
 
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<List<Token>> response = restTemplate.exchange(
-                url,
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<List<Token>>() {
+                url, HttpMethod.GET, null, new ParameterizedTypeReference<List<Token>>() {
                 }
         );
 
@@ -77,21 +74,21 @@ public class StorageDocumentIntegrityVerifier {
 
     }
 
-    public static PublicKey loadPublicKeyFromCertificate(String pemCert) throws Exception {
+    public PublicKey loadPublicKeyFromCertificate(String pemCert) throws Exception {
         ByteArrayInputStream certStream = new ByteArrayInputStream(pemCert.getBytes(StandardCharsets.UTF_8));
         CertificateFactory cf = CertificateFactory.getInstance("X.509");
         X509Certificate cert = (X509Certificate) cf.generateCertificate(certStream);
         return cert.getPublicKey();
     }
 
-    public static boolean verifyHash(String data, String hashFunctionName, String expectedHexHash) {
+    public boolean verifyHash(String data, String hashFunctionName, String expectedHexHash) {
         MessageDigest hashFunction = getHashFunction(hashFunctionName);
         byte[] hash = hashString(data, hashFunction);
         String hashHex = bytesToHex(hash);
         return hashHex.equals(expectedHexHash);
     }
 
-    public static MessageDigest getHashFunction(String hashFunction) {
+    public MessageDigest getHashFunction(String hashFunction) {
         try {
             return MessageDigest.getInstance(hashFunction);
         } catch (Exception e) {
@@ -99,13 +96,13 @@ public class StorageDocumentIntegrityVerifier {
         }
     }
 
-    public static byte[] hashString(String input, MessageDigest digest) {
+    public byte[] hashString(String input, MessageDigest digest) {
         byte[] inputBytes = input.getBytes(StandardCharsets.UTF_8);
         digest.update(inputBytes);
         return digest.digest();
     }
 
-    public static String bytesToHex(byte[] bytes) {
+    public String bytesToHex(byte[] bytes) {
         StringBuilder sb = new StringBuilder();
         for (byte b : bytes) {
             sb.append(String.format("%02x", b));

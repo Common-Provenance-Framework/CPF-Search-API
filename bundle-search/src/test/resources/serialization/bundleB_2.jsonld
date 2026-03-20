@@ -11,6 +11,14 @@
     "@context" : [ { }, "https://openprovenance.org/prov-jsonld/context.jsonld" ],
     "@id" : "ex:bundleB",
     "@graph" : [ {
+      "@type" : "Entity",
+      "@id" : "ex:backConnector1",
+      "type" : [ "cpm:backwardConnector" ]
+    }, {
+      "@type" : "Entity",
+      "@id" : "ex:forwardConnector1",
+      "type" : [ "cpm:forwardConnector" ]
+    }, {
       "@type" : "Activity",
       "@id" : "ex:activity1",
       "startTime" : "2011-11-16T16:05:00.000+01:00",
@@ -24,14 +32,6 @@
       "@type" : "Generation",
       "entity" : "ex:forwardConnector1",
       "activity" : "ex:activity1"
-    }, {
-      "@type" : "Entity",
-      "@id" : "ex:backConnector1",
-      "type" : [ "cpm:backwardConnector" ]
-    }, {
-      "@type" : "Entity",
-      "@id" : "ex:forwardConnector1",
-      "type" : [ "cpm:forwardConnector" ]
     }, {
       "@type" : "Derivation",
       "generatedEntity" : "ex:forwardConnector1",

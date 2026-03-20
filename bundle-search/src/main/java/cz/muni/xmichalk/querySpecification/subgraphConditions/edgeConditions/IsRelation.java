@@ -15,7 +15,9 @@ public class IsRelation implements ICondition<IEdge> {
     }
 
     public boolean test(IEdge edge) {
-        if (relation == null) return true;
+        if (relation == null) {
+            throw new IllegalStateException("Value of relation cannot be null in " + this.getClass().getSimpleName());
+        }
 
         return edge.getRelations().stream().anyMatch((relation) -> relation.getKind().equals(this.relation));
     }

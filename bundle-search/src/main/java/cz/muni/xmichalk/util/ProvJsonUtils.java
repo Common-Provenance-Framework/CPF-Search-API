@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.node.TextNode;
 
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.Set;
 
 public class ProvJsonUtils {
 
@@ -18,9 +19,11 @@ public class ProvJsonUtils {
             JsonNode root = mapper.readTree(json);
 
             root = addExplicitBundleId(root);
+            root = putTypedObjectsInArrays(root, mapper);
+            root = putStringValuesInArray(root, mapper, false);
             root = stringifyValues(root, mapper);
             root = copyOuterPrefixesIntoBundles(root, mapper);
-            root = reformatProvType(root, mapper);
+
 
             return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(root);
         } catch (IOException e) {
@@ -32,7 +35,7 @@ public class ProvJsonUtils {
      * Add explicit "@id" property to bundle to comply with provtoolbox deserialization requirements.
      *
      * @param root the original JSON, possibly without "@id" in bundle
-     * @return the modified JSON string in minimized format with proper "@id" added to bundle
+     * @return the modified JSON Node with proper "@id" added to bundle
      */
     public static JsonNode addExplicitBundleId(JsonNode root) {
         JsonNode bundleNode = root.path("bundle");
@@ -49,6 +52,12 @@ public class ProvJsonUtils {
         return root;
     }
 
+    /**
+     * Removes "@id" property in bundle.
+     *
+     * @param json the original JSON, possibly with "@id" in bundle
+     * @return the modified JSON string without "@id"
+     */
     public static String removeExplicitBundleId(String json) {
         try {
             ObjectMapper mapper = new ObjectMapper();
@@ -97,9 +106,9 @@ public class ProvJsonUtils {
                 String bundleId = it.next();
                 ObjectNode bundleObj = (ObjectNode) bundleNode.path(bundleId);
 
-                ObjectNode bundlePrefix = bundleObj.has("prefix") && bundleObj.get("prefix").isObject()
-                        ? (ObjectNode) bundleObj.get("prefix")
-                        : mapper.createObjectNode();
+                ObjectNode bundlePrefix = bundleObj.has("prefix") && bundleObj.get("prefix").isObject() ?
+                        (ObjectNode) bundleObj.get("prefix") :
+                        mapper.createObjectNode();
 
                 outerPrefix.fields().forEachRemaining(entry -> {
                     bundlePrefix.set(entry.getKey(), entry.getValue());
@@ -112,25 +121,54 @@ public class ProvJsonUtils {
         return root;
     }
 
-    private static JsonNode reformatProvType(JsonNode node, ObjectMapper mapper) {
+    private static JsonNode putTypedObjectsInArrays(JsonNode node, ObjectMapper mapper) {
         if (node.isObject()) {
             ObjectNode obj = (ObjectNode) node;
-            obj.fields().forEachRemaining(entry -> {
-                if ("prov:type".equals(entry.getKey()) && entry.getValue().isTextual()) {
-                    String value = entry.getValue().asText();
-                    ArrayNode arr = mapper.createArrayNode();
-                    ObjectNode typeObj = mapper.createObjectNode();
-                    typeObj.put("type", "prov:QUALIFIED_NAME");
-                    typeObj.put("$", value);
-                    arr.add(typeObj);
-                    obj.set("prov:type", arr);
-                } else {
-                    reformatProvType(entry.getValue(), mapper);
+
+            boolean hasDollar = obj.has("$");
+            boolean hasType = obj.has("type");
+
+            // If object matches {"$", "type"} → wrap in array
+            if (hasDollar && hasType) {
+                ArrayNode arr = mapper.createArrayNode();
+                arr.add(obj);
+                return arr;
+            }
+
+            // Otherwise recurse through fields
+            ObjectNode newObj = mapper.createObjectNode();
+            obj.fields().forEachRemaining(e -> newObj.set(e.getKey(), putTypedObjectsInArrays(e.getValue(), mapper)));
+            return newObj;
+        }
+
+        return node;
+    }
+
+
+    private static JsonNode putStringValuesInArray(JsonNode node, ObjectMapper mapper, boolean insideTarget) {
+
+        if (node.isObject()) {
+            ObjectNode obj = (ObjectNode) node;
+
+            if (obj.has("$")) {
+                return node;
+            }
+
+            Iterator<String> fieldNames = obj.fieldNames();
+            while (fieldNames.hasNext()) {
+                String fieldName = fieldNames.next();
+                JsonNode child = obj.get(fieldName);
+
+                boolean nowInsideTarget = insideTarget || Set.of("entity", "activity", "agent").contains(fieldName);
+
+                if (nowInsideTarget) {
+                    if (child.isTextual() && !fieldName.equals("prov:startTime") && !fieldName.equals("prov:endTime")) {
+                        ArrayNode arr = mapper.createArrayNode();
+                        arr.add(child.textValue());
+                        obj.set(fieldName, arr);
+                    }
                 }
-            });
-        } else if (node.isArray()) {
-            for (JsonNode item : node) {
-                reformatProvType(item, mapper);
+                putStringValuesInArray(child, mapper, nowInsideTarget);
             }
         }
 

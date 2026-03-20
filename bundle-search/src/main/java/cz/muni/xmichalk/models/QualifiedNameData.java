@@ -27,15 +27,10 @@ public class QualifiedNameData {
     }
 
     public QualifiedName toQN() {
-        return new org.openprovenance.prov.vanilla.QualifiedName(
-                this.nameSpaceUri,
-                this.localPart,
-                null
-        );
+        return new org.openprovenance.prov.vanilla.QualifiedName(this.nameSpaceUri, this.localPart, null);
     }
 
-    @Override
-    public String toString() {
+    @Override public String toString() {
         return nameSpaceUri + localPart;
     }
 }

@@ -4,21 +4,26 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import cz.muni.xmichalk.dto.BundleQueryResultDTO;
 import cz.muni.xmichalk.models.ItemToTraverse;
-import cz.muni.xmichalk.provServiceAPI.ProvServiceAPI;
-import cz.muni.xmichalk.provServiceTable.IProvServiceTable;
+import cz.muni.xmichalk.provServiceAPI.IProvServiceAPI;
 
 import java.io.IOException;
 import java.io.InputStream;
 
 public class DemoValidityVerifier implements IValidityVerifier {
-    private final IProvServiceTable provServiceTable;
+    private final IProvServiceAPI provServiceAPI;
     private final JsonNode validitySpecification;
+    private final String authorizationHeader;
 
-    public DemoValidityVerifier(IProvServiceTable provServiceTable, InputStream input) {
-        this.provServiceTable = provServiceTable;
+    public DemoValidityVerifier(
+            IProvServiceAPI provServiceAPI,
+            InputStream validitySpecificationJson,
+            String authorizationHeader
+    ) {
+        this.provServiceAPI = provServiceAPI;
+        this.authorizationHeader = authorizationHeader;
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            validitySpecification = objectMapper.readTree(input);
+            validitySpecification = objectMapper.readTree(validitySpecificationJson);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -26,21 +31,20 @@ public class DemoValidityVerifier implements IValidityVerifier {
     }
 
 
-    @Override
-    public boolean verify(ItemToTraverse itemToTraverse, BundleQueryResultDTO queryResult) {
-        String bundleUri = queryResult.token.data().additionalData().bundle();
+    @Override public boolean verify(ItemToTraverse itemToTraverse, BundleQueryResultDTO queryResult) {
+        String provServiceUri = itemToTraverse.provServiceUri;
 
-        String provServiceUri = provServiceTable.getServiceUri(bundleUri);
-
-        BundleQueryResultDTO result = null;
-        try {
-            result = ProvServiceAPI.fetchBundleQueryResult(provServiceUri, itemToTraverse.bundleId, itemToTraverse.connectorId, validitySpecification);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        BundleQueryResultDTO result = provServiceAPI.fetchBundleQueryResult(
+                provServiceUri,
+                itemToTraverse.bundleId,
+                itemToTraverse.connectorId,
+                authorizationHeader,
+                validitySpecification
+        );
 
         if (result == null) {
-            throw new RuntimeException("Fetch TEST_FITS result for bundle: " + itemToTraverse.bundleId.getUri() + " returned null.");
+            throw new RuntimeException(
+                    "Fetch TEST_FITS result for bundle: " + itemToTraverse.bundleId.getUri() + " returned null.");
         }
 
         ObjectMapper objectMapper = new ObjectMapper();

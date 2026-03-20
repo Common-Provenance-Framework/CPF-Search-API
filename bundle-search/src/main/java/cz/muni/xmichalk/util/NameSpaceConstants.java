@@ -6,5 +6,6 @@ public class NameSpaceConstants {
     public static final String BLANK_URI = "https://openprovenance.org/blank/";
     public static final String PAV_URI = "http://purl.org/pav/";
     public static final String SCHEMA_URI = "https://schema.org/";
+    public static final String DCT_URI = "http://purl.org/dc/terms/";
 
 }
