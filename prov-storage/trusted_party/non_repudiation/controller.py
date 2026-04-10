@@ -254,7 +254,7 @@ def _build_jwt_token_parts_from_values(
     payload = {
         "originatorId": originator_id,
         "authorityId": config.id,
-        "tokenTimestamp": token_timestamp,
+        "tokenTimestamp": token_timestamp, # TODO: Use clear claims like iss, iat, jti
         "documentCreationTimestamp": document_creation_timestamp,
         "documentDigest": document_hash,
     }
@@ -265,7 +265,7 @@ def _build_jwt_token_parts_from_values(
         "bundle": bundle_id,
         "hashFunction": "SHA256",
         "trustedPartyUri": config.fqdn,
-        "trustedPartyCertificate": config.cert,
+        "trustedPartyCertificate": config.cert, # TODO: This should be KID not entire certificate because token size matters!!
     }
 
     return header, payload
