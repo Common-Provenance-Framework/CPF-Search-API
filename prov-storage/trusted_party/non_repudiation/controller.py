@@ -339,7 +339,7 @@ def create_new_token(json_data, doc: Document, token_format):
     token_timestamp = int(datetime.now().timestamp())
 
     serialized_token = get_serialized_json_token(json_data, doc.identifier, token_timestamp)
-    jwt_token = get_serialized_jwt_token(json_data, doc.identifier, token_timestamp)
+    jwt_token = get_jwt_token(json_data, doc.identifier, token_timestamp)
 
     t = Token()
     t.hash = serialized_token["data"]["documentDigest"]
@@ -350,14 +350,20 @@ def create_new_token(json_data, doc: Document, token_format):
     t.jwt = jwt_token
     t.save()
 
-    return serialized_token if token_format == "json" else jwt_token
+    return serialized_token if token_format == "json" else _serialize_jwt_token_to_json(jwt_token)
 
 def _serialize_existing_token(token, doc, org_id, token_format):
     return _serialize_existing_json_token(token, doc, org_id) if token_format == "json" else _serialize_existing_jwt_token(token, doc, org_id)
 
+def _serialize_jwt_token_to_json(token):
+        t = {
+            "jwt": token
+        }
+        return t
+
 def _serialize_existing_jwt_token(token, doc, org_id):
     if token.jwt is not None:
-        return token.jwt
+        return _serialize_jwt_token_to_json(token.jwt)
 
     header, payload = _build_jwt_token_parts_from_values(
         org_id,
@@ -366,7 +372,8 @@ def _serialize_existing_jwt_token(token, doc, org_id):
         token.hash,
         token.created_on,
     )
-    return _serialize_jwt(header, payload)
+
+    return _serialize_jwt_token_to_json(_serialize_jwt(header, payload))
 
 def _serialize_existing_json_token(token, doc, org_id):
     t = {
@@ -389,6 +396,9 @@ def _serialize_existing_json_token(token, doc, org_id):
     return t
 
 def get_serialized_jwt_token(json_data, bundle_id, token_timestamp):
+    return _serialize_jwt_token_to_json(get_jwt_token(json_data, bundle_id, token_timestamp))
+
+def get_jwt_token(json_data, bundle_id, token_timestamp):
     header, payload = _build_jwt_token_parts(json_data, bundle_id, token_timestamp)
     return _serialize_jwt(header, payload)
 
