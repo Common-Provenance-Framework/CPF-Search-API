@@ -9,11 +9,13 @@ from trusted_party.settings import config
 from datetime import datetime
 from django.core.exceptions import ObjectDoesNotExist
 import base64
+import json
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives import hashes
 from cryptography.x509 import load_pem_x509_certificate
 from cryptography.hazmat.primitives.asymmetric import ec
+from cryptography.hazmat.primitives.asymmetric.utils import decode_dss_signature
 from prov.model import ProvDocument, ProvBundle
 
 private_key = serialization.load_pem_private_key(config.private_key, password=None)
@@ -193,7 +195,7 @@ def retrieve_document(org_id, doc_id, doc_format="json"):
     return doc
 
 
-def retrieve_tokens(org_id):
+def retrieve_tokens(org_id, token_format="json"):
     org = Organization.objects.filter(org_name=org_id).first()
     docs = Document.objects.filter(organization=org).all()
 
@@ -202,31 +204,17 @@ def retrieve_tokens(org_id):
         tokens[doc] = Token.objects.filter(document=doc).all()
 
     tokens_out = []
-    for doc, tokens in tokens.items():  # fixed - added .items()
+    for doc, tokens in tokens.items():
         for token in tokens:
-            t = {
-                "data": {
-                    "originatorId": org.org_name,
-                    "authorityId": config.id,
-                    "tokenTimestamp": token.created_on,
-                    "documentCreationTimestamp": doc.created_on,
-                    "documentDigest": token.hash,
-                    "additionalData": {
-                        "bundle": doc.identifier,
-                        "hashFunction": "SHA256",
-                        "trustedPartyUri": config.fqdn,
-                        "trustedPartyCertificate": config.cert,
-                    },
-                },
-                "signature": token.signature,
-            }
-            tokens_out.append(t)
+            tokens_out.append(
+                _serialize_existing_token(token, doc, org.org_name, token_format)
+            )
 
     return tokens_out
 
 
 # change - doc_format added
-def retrieve_specific_token(org_id, doc_id, doc_type="graph", doc_format="json"):
+def retrieve_specific_token(org_id, doc_id, doc_type="graph", doc_format="json", token_format="json"):
     org = Organization.objects.get(org_name=org_id)
     doc = Document.objects.get(
         organization=org, identifier=doc_id, document_type=doc_type, doc_format=doc_format
@@ -235,23 +223,7 @@ def retrieve_specific_token(org_id, doc_id, doc_type="graph", doc_format="json")
 
     tokens_out = []
     for token in tokens:
-        t = {
-            "data": {
-                "originatorId": org.org_name,
-                "authorityId": config.id,
-                "tokenTimestamp": token.created_on,
-                "documentCreationTimestamp": doc.created_on,
-                "documentDigest": token.hash,
-                "additionalData": {
-                    "bundle": doc.identifier,
-                    "hashFunction": "SHA256",
-                    "trustedPartyUri": config.fqdn,
-                    "trustedPartyCertificate": config.cert,
-                },
-            },
-            "signature": token.signature,
-        }
-        tokens_out.append(t)
+        tokens_out.append(_serialize_existing_token(token, doc, org.org_name, token_format))
 
     return tokens_out if len(tokens_out) > 1 else tokens_out[0]
 
@@ -276,7 +248,64 @@ def verify_signature(json_data):
     )
 
 
-def get_serialized_token(json_data, bundle_id):
+def _build_jwt_token_parts_from_values(
+    originator_id, bundle_id, document_creation_timestamp, document_hash, token_timestamp
+):
+    payload = {
+        "originatorId": originator_id,
+        "authorityId": config.id,
+        "tokenTimestamp": token_timestamp, # TODO: Use clear claims like iss, iat, jti
+        "documentCreationTimestamp": document_creation_timestamp,
+        "documentDigest": document_hash,
+    }
+
+    header = {
+        "alg": "ES256",
+        "typ": "JWT",
+        "bundle": bundle_id,
+        "hashFunction": "SHA256",
+        "trustedPartyUri": config.fqdn,
+        "trustedPartyCertificate": config.cert, # TODO: This should be KID not entire certificate because token size matters!!
+    }
+
+    return header, payload
+
+
+def _build_jwt_token_parts(json_data, bundle_id, token_timestamp):
+    digest = hashes.Hash(hashes.SHA256())
+    digest.update(base64.b64decode(json_data["document"]))
+    document_hash = digest.finalize().hex()
+
+    return _build_jwt_token_parts_from_values(
+        json_data["organizationId"],
+        bundle_id,
+        json_data["createdOn"],
+        document_hash,
+        token_timestamp,
+    )
+
+
+def _serialize_jwt(header, payload):
+    def _to_base64url(value: bytes) -> str:
+        return base64.urlsafe_b64encode(value).rstrip(b"=").decode("ascii")
+
+    encoded_header = _to_base64url(
+        json.dumps(header, separators=(",", ":"), sort_keys=True).encode("utf-8")
+    )
+    encoded_payload = _to_base64url(
+        json.dumps(payload, separators=(",", ":"), sort_keys=True).encode("utf-8")
+    )
+
+    signing_input = f"{encoded_header}.{encoded_payload}".encode("ascii")
+    der_signature = private_key.sign(signing_input, ec.ECDSA(hashes.SHA256()))
+    r, s = decode_dss_signature(der_signature)
+    jose_signature = r.to_bytes(32, byteorder="big") + s.to_bytes(32, byteorder="big")
+    encoded_signature = _to_base64url(jose_signature)
+
+    return f"{encoded_header}.{encoded_payload}.{encoded_signature}"
+
+
+def get_serialized_json_token(json_data, bundle_id, token_timestamp):
     digest = hashes.Hash(hashes.SHA256())
     digest.update(base64.b64decode(json_data["document"]))
     hash = digest.finalize().hex()
@@ -285,7 +314,7 @@ def get_serialized_token(json_data, bundle_id):
         "data": {
             "originatorId": json_data["organizationId"],
             "authorityId": config.id,
-            "tokenTimestamp": int(datetime.now().timestamp()),
+            "tokenTimestamp": token_timestamp,
             "documentCreationTimestamp": json_data["createdOn"],
             "documentDigest": hash,
             "additionalData": {
@@ -306,19 +335,72 @@ def get_serialized_token(json_data, bundle_id):
     return serialized_token
 
 
-def create_new_token(json_data, doc: Document):
-    serialized_token = get_serialized_token(json_data, doc.identifier)
+def create_new_token(json_data, doc: Document, token_format):
+    token_timestamp = int(datetime.now().timestamp())
+
+    serialized_token = get_serialized_json_token(json_data, doc.identifier, token_timestamp)
+    jwt_token = get_jwt_token(json_data, doc.identifier, token_timestamp)
 
     t = Token()
     t.hash = serialized_token["data"]["documentDigest"]
-    t.hash_function = "SHA256"
+    t.hash_function = serialized_token["data"]["additionalData"]["hashFunction"]
     t.document = doc
     t.created_on = serialized_token["data"]["tokenTimestamp"]
     t.signature = serialized_token["signature"]
+    t.jwt = jwt_token
     t.save()
 
-    return serialized_token
+    return serialized_token if token_format == "json" else _serialize_jwt_token_to_json(jwt_token)
 
+def _serialize_existing_token(token, doc, org_id, token_format):
+    return _serialize_existing_json_token(token, doc, org_id) if token_format == "json" else _serialize_existing_jwt_token(token, doc, org_id)
+
+def _serialize_jwt_token_to_json(token):
+        t = {
+            "jwt": token
+        }
+        return t
+
+def _serialize_existing_jwt_token(token, doc, org_id):
+    if token.jwt is not None:
+        return _serialize_jwt_token_to_json(token.jwt)
+
+    header, payload = _build_jwt_token_parts_from_values(
+        org_id,
+        doc.identifier,
+        doc.created_on,
+        token.hash,
+        token.created_on,
+    )
+
+    return _serialize_jwt_token_to_json(_serialize_jwt(header, payload))
+
+def _serialize_existing_json_token(token, doc, org_id):
+    t = {
+        "data": {
+            "originatorId": org_id,
+            "authorityId": config.id,
+            "tokenTimestamp": token.created_on,
+            "documentCreationTimestamp": doc.created_on,
+            "documentDigest": token.hash,
+            "additionalData": {
+                "bundle": doc.identifier,
+                "hashFunction": token.hash_function,
+                "trustedPartyUri": config.fqdn,
+                "trustedPartyCertificate": config.cert,
+            },
+        },
+        "signature": token.signature,
+    }
+
+    return t
+
+def get_serialized_jwt_token(json_data, bundle_id, token_timestamp):
+    return _serialize_jwt_token_to_json(get_jwt_token(json_data, bundle_id, token_timestamp))
+
+def get_jwt_token(json_data, bundle_id, token_timestamp):
+    header, payload = _build_jwt_token_parts(json_data, bundle_id, token_timestamp)
+    return _serialize_jwt(header, payload)
 
 def check_is_subgraph(prov_bundle: ProvBundle, prov_bundle_original: ProvBundle):
     """try:
@@ -332,7 +414,7 @@ def check_is_subgraph(prov_bundle: ProvBundle, prov_bundle_original: ProvBundle)
 
 # change - transaction
 @transaction.atomic
-def issue_token_and_store_doc(json_data):
+def issue_token_and_store_doc(json_data, token_format="json"):
     graph = base64.b64decode(json_data["document"])
     prov_document = ProvDocument.deserialize(
         content=graph, format=json_data["documentFormat"]
@@ -347,12 +429,13 @@ def issue_token_and_store_doc(json_data):
         check_is_subgraph(prov_bundle, prov_bundle_original)
 
     if json_data["type"] == "meta":
-        return get_serialized_token(json_data, prov_bundle.identifier.uri)
+        time_stamp = int(datetime.now().timestamp())
+        return get_serialized_json_token(json_data, prov_bundle.identifier.uri, time_stamp) if token_format == "json" else get_serialized_jwt_token(json_data, prov_bundle.identifier.uri, time_stamp)
 
     try:
         # change - documentFormat also used to retrieve token
         tokens = retrieve_specific_token(
-            json_data["organizationId"], prov_bundle.identifier.uri, json_data["type"], json_data["documentFormat"]
+            json_data["organizationId"], prov_bundle.identifier.uri, json_data["type"], json_data["documentFormat"], token_format
         )
 
         return tokens
@@ -375,6 +458,4 @@ def issue_token_and_store_doc(json_data):
             d.signature = None
         d.save()
 
-        token = create_new_token(json_data, d)
-
-        return token
+        return create_new_token(json_data, d, token_format)

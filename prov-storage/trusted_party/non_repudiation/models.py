@@ -43,3 +43,4 @@ class Token(models.Model):
     hash_function = models.CharField(max_length=15, choices=HASH_FUNCTIONS)
     created_on = models.IntegerField()
     signature = models.TextField()
+    jwt = models.TextField(null=True)

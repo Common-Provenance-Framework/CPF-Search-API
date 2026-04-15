@@ -128,8 +128,12 @@ def retrieve_document(request, org_id, doc_id, doc_format):
 @csrf_exempt
 @require_GET
 def retrieve_all_tokens(request, org_id):
+    token_format = request.GET.get('tokenFormat', 'json')
+    if token_format not in ('json', 'jwt'):
+        return JsonResponse({"error": f"Incorrect tokenFormat [{token_format}], must be one of [json|jwt]!"}, status=400)
+
     try:
-        tokens = controller.retrieve_tokens(org_id)
+        tokens = controller.retrieve_tokens(org_id, token_format=token_format)
     except ObjectDoesNotExist:
         return JsonResponse({"error": f"Organization with id [{org_id}] does not exist!"}, status=404)
 
@@ -143,17 +147,26 @@ def retrieve_all_tokens(request, org_id):
 @require_GET
 # change - doc_format added
 def specific_token(request, org_id, doc_id, doc_format):
+    token_format = request.GET.get('tokenFormat', 'json')
+    if token_format not in ('json', 'jwt'):
+        return JsonResponse({"error": f"Incorrect tokenFormat [{token_format}], must be one of [json|jwt]!"}, status=400)
+
     try:
         Organization.objects.get(org_name=org_id)
     except ObjectDoesNotExist:
         return JsonResponse({"error": f"Organization with id [{org_id}] does not exist!"}, status=404)
 
     try:
-        token = controller.retrieve_specific_token(org_id, doc_id, doc_format=doc_format)
+        token = controller.retrieve_specific_token(
+            org_id,
+            doc_id,
+            doc_format=doc_format,
+            token_format=token_format,
+        )
     except ObjectDoesNotExist:
         return JsonResponse({"error": f"No document found with id [{doc_id}] in format [{doc_format}] under organization [{org_id}]!"}, status=404)
 
-    return JsonResponse(token, safe=True)
+    return JsonResponse(token, safe=False)
 
 
 @csrf_exempt
@@ -181,10 +194,14 @@ def issue_token(request):
         except ObjectDoesNotExist:
             return JsonResponse({"error": f"Organization with id [{json_data['organizationId']}] does not exist!"}, status=400)
 
+    token_format = json_data.get('tokenFormat', 'json')
+    if token_format not in ('json', 'jwt'):
+        return JsonResponse({"error": f"Incorrect tokenFormat [{token_format}], must be one of [json|jwt]!"}, status=400)
+
     try:
         if json_data['type'] == "graph":
             controller.verify_signature(json_data)
-        token = controller.issue_token_and_store_doc(json_data)
+        token = controller.issue_token_and_store_doc(json_data, token_format=token_format)
     except InvalidSignature:
         return JsonResponse({"error": f"Invalid signature to the graph!"}, status=400)
     except (ObjectDoesNotExist, IsNotSubgraph) as e:
